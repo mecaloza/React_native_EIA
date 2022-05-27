@@ -1,8 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, Dimensions } from "react-native";
 import NavigationMenu from "./tools/NavigationMenu";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart,
+} from "react-native-chart-kit";
+const screenWidth = Dimensions.get("window").width;
 
 var mqtt = require("@taoqf/react-native-mqtt");
 var options = {
@@ -18,10 +27,12 @@ export default function HomeScreen({ navigation }) {
   const [voltage_val, setvoltage_val] = useState("");
 
   // Real time graph
-  const [current_graph, setcurrent_graph] = useState([{ id: 0, value: 0 }]);
+  const [current_graph, setcurrent_graph] = useState([0]);
+  const [label, setlabel] = useState([0]);
 
   let currentref = useRef("");
   currentref.current = current_val;
+
   useEffect(() => {
     var client = mqtt.connect("mqtt://smart.cloud.shiftr.io", options);
     client.subscribe("Termofijadora01/fase1/#");
@@ -33,10 +44,8 @@ export default function HomeScreen({ navigation }) {
       if (topic === "Termofijadora01/fase1/corriente") {
         console.log("corriente", note);
         cont = cont + 1;
-        setcurrent_graph((current_graph) => [
-          ...current_graph,
-          { id: cont, value: note },
-        ]);
+        setlabel((label) => [...label, cont]);
+        setcurrent_graph((current_graph) => [...current_graph, note]);
 
         setcurrent(note);
       } else if (topic === "Termofijadora01/fase1/voltaje") {
@@ -48,6 +57,7 @@ export default function HomeScreen({ navigation }) {
       }
     });
   }, []);
+
   return (
     <View style={styles.container}>
       <NavigationMenu></NavigationMenu>
@@ -63,11 +73,63 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.text_info}>{current_val}</Text>
         </View>
       </View>
+      <View style={styles.card_info}>
+        <Text style={styles.text_info}>Voltaje</Text>
+        <View style={styles.line_separator}></View>
+        <View style={styles.row_card}>
+          <MaterialCommunityIcons
+            name="lightning-bolt"
+            size={90}
+            color="white"
+          />
+          <Text style={styles.text_info}>{voltage_val}</Text>
+        </View>
+      </View>
+      <LineChart
+        data={{
+          labels: label,
+          datasets: [
+            {
+              data: current_graph,
+            },
+          ],
+        }}
+        width={screenWidth} // from react-native
+        height={220}
+        yAxisLabel=""
+        yAxisInterval={1} // optional, defaults to 1
+        chartConfig={{
+          backgroundColor: "#e26a00",
+          backgroundGradientFrom: "#fb8c00",
+          backgroundGradientTo: "#ffa726",
+          decimalPlaces: 2, // optional, defaults to 2dp
+          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          style: {
+            borderRadius: 16,
+          },
+          propsForDots: {
+            r: "6",
+            strokeWidth: "2",
+            stroke: "#ffa726",
+          },
+        }}
+        bezier
+        style={{
+          marginVertical: 8,
+          borderRadius: 16,
+        }}
+      ></LineChart>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  button: {
+    width: 150,
+    height: 30,
+    backgroundColor: "black",
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",

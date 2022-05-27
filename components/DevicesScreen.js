@@ -11,6 +11,7 @@ import {
   Platform,
   Alert,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import NavigationMenu from "./tools/NavigationMenu";
 
