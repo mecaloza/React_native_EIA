@@ -7,6 +7,7 @@ import HomeScreen from "./components/HomeScreen";
 import MachinesScreen from "./components/MachinesScreen";
 import DevicesScreen from "./components/DevicesScreen";
 import GraphScreen from "./components/GraphScreen";
+import ControlScreen from "./components/ControlScreen";
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Stack.Screen name="machines" component={MachinesScreen}></Stack.Screen>
         <Stack.Screen name="devices" component={DevicesScreen}></Stack.Screen>
         <Stack.Screen name="graph" component={GraphScreen}></Stack.Screen>
+        <Stack.Screen name="control" component={ControlScreen}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

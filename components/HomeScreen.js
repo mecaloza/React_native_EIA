@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Pressable, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Dimensions,
+  ScrollView,
+} from "react-native";
 import NavigationMenu from "./tools/NavigationMenu";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
@@ -59,7 +66,7 @@ export default function HomeScreen({ navigation }) {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <ScrollView>
       <NavigationMenu></NavigationMenu>
       <View style={styles.card_info}>
         <Text style={styles.text_info}>Corriente</Text>
@@ -120,7 +127,7 @@ export default function HomeScreen({ navigation }) {
           borderRadius: 16,
         }}
       ></LineChart>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -143,6 +150,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     display: "flex",
     alignItems: "center",
+    marginTop: 100,
   },
   text_info: {
     fontSize: 30,

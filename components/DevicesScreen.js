@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   button_form: {
     width: "80%",
     height: 50,
-    backgroundColor: "black",
+    backgroundColor: "D8779C",
     marginTop: 100,
     display: "flex",
     justifyContent: "center",

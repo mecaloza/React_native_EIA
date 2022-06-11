@@ -7,6 +7,7 @@ import {
   AntDesign,
   Entypo,
   Foundation,
+  Ionicons,
 } from "@expo/vector-icons";
 
 export default function NavigationMenu() {
@@ -36,6 +37,14 @@ export default function NavigationMenu() {
         <Foundation
           style={styles.icon}
           name="graph-bar"
+          size={35}
+          color="white"
+        />
+      </Pressable>
+      <Pressable onPress={() => navigation.navigate("control")}>
+        <Ionicons
+          style={styles.icon}
+          name="game-controller"
           size={35}
           color="white"
         />
